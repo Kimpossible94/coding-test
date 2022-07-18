@@ -8,8 +8,30 @@ import java.util.StringTokenizer;
 public class Step8 {
    public static void main(String[] args) throws IOException {
 //      소수_찾기_1978();
-      소수_2581();
+//      소수_2581();
+      소인수분해_11653();
    }
+
+   private static void 소인수분해_11653() throws IOException {
+      //정수 N이 주어졌을 때, 소인수분해하는 프로그램을 작성하시오.
+      BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+      StringBuilder sb = new StringBuilder();
+
+      int N = Integer.parseInt(br.readLine());
+
+      for (int i = 2; i <= Math.sqrt(N); i++) {
+         while (N % i == 0) {
+            sb.append(i).append('\n');
+            N /= i;
+         }
+      }
+
+      if(N != 1){
+         sb.append(N);
+      }
+      System.out.println(sb);
+   }
+
 
    private static void 소수_2581() throws IOException {
       //자연수 M과 N이 주어질 때 M이상 N이하의 자연수 중 소수인 것을 모두 골라 이들 소수의 합과 최솟값을 찾는 프로그램을 작성하시오.
@@ -20,29 +42,27 @@ public class Step8 {
       int M = Integer.parseInt(br.readLine());
       int N = Integer.parseInt(br.readLine());
       boolean[] primeFlg = new boolean[N+1];
-      primeFlg = 에라토르테네스의체(primeFlg);
+      에라토르테네스의체(primeFlg);
 
-      boolean flg = true;
-      int min = 0;
-      int result = 0;
-      for (int i = M; i < primeFlg.length; i++) {
+      int sum = 0;
+      int min = Integer.MAX_VALUE;
+      for (int i = M; i <= N; i++) {
          if(!primeFlg[i]){
-            result += i;
-            if(flg) {
+            sum += i;
+            if(min == Integer.MAX_VALUE) {
                min = i;
-               flg = false;
             }
          }
       }
 
-      if(result == 0) System.out.println(-1);
+      if(sum == 0) System.out.println(-1);
       else {
-         System.out.println(result);
+         System.out.println(sum);
          System.out.println(min);
       }
    }
 
-   private static boolean[] 에라토르테네스의체(boolean[] primeFlg){
+   private static void 에라토르테네스의체(boolean[] primeFlg){
       // 0과 1은 소수가 아니므로 true
       primeFlg[0] = true;
       primeFlg[1] = true;
@@ -51,11 +71,10 @@ public class Step8 {
          // 이미 걸러진 숫자라면 Pass
          if(primeFlg[i]) continue;
 
-         for (int j = i * i; j < primeFlg.length; j = j + i) {
+         for (int j = i * i; j < primeFlg.length; j += i) {
             primeFlg[j] = true;
          }
       }
-      return primeFlg;
    }
    private static void 소수_찾기_1978() throws IOException {
       //주어진 수 N개 중에서 소수가 몇 개인지 찾아서 출력하는 프로그램을 작성하시오.
